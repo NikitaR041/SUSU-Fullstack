@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController
 {
@@ -23,7 +24,7 @@ class UserController
         ]);
 
         // Создаем нового пользователя
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password), // Хэшируем пароль
@@ -31,6 +32,45 @@ class UserController
 
         // return redirect('/login'); // Перенаправляем на страницу входа
         // Перенаправление (например, на главную)
-        return redirect('/')->with('success', 'Регистрация прошла успешно!');
+        Auth::login($user);
+        return redirect()->route('dashboard');
     }
+
+    //Показывать форму входа
+    public function showLoginForm(){
+        return view('pages.auth.login');
+    }
+
+    //Вход пользователя - логика
+    public function login(Request $request)
+    {
+        // Валидация данных формы
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        // Попытка авторизации
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();          // защита от фиксации сессии - меняем ID
+            return redirect()->route('dashboard');      // на рабочий стол
+        }
+
+        // Ошибка: возвращаемся назад с сообщением
+        return back()->withErrors([
+            'email' => 'Неверный email или пароль.',
+        ])->onlyInput('email');
+    }
+
+    /** Выход */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate(); //Обнуляем сессию - защита от кражи
+        $request->session()->regenerateToken(); //Новый CSRF-токен
+        return redirect()->route('cover');
+    }
+
 }
+
+

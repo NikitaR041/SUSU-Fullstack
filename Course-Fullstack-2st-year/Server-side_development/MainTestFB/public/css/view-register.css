@@ -4,8 +4,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
-    background-color: #f8f9fa;
+    /* padding: 2rem; */
+    /* background-color: #f8f9fa; */
 }
 
 .register-container {
@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    /* gap: 1.5rem; */
 }
 
 .register-logo {
@@ -78,4 +78,27 @@
 
 .register-button:hover {
     background-color: #0069d9;
+}
+
+/*  */
+.auth-switch {
+    /* margin-top: 1.5rem; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.auth-link {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #007bff;
+    text-decoration: none;
+    transition: all 0.6s;
+}
+
+.auth-link:hover {
+    background-color: #e0e0e0;
+    text-decoration: none;
 }
