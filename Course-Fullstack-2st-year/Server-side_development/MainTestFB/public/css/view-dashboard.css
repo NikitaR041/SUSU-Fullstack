@@ -1,0 +1,117 @@
+/* .dashboard-header {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-info {
+    font-size: 20px;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.container {
+    width: 100%;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+ */
+
+ /* Основной фон и контейнер */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #dcdcdc;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Левая панель с кнопками */
+.sidebar {
+    background-color: #dcdcdc;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sidebar button,
+.sidebar a {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Верхняя панель */
+.header {
+    background-color: #dcdcdc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #999;
+}
+
+/* Правая часть */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Область задач */
+.task-board {
+    background-color: #e8c0c0;
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Карточки задач */
+.task-card {
+    width: 180px;
+    height: 150px;
+    background-color: #d3d3d3;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-word;
+    text-align: center;
+}
+
+/* Выпадающий фильтр */
+.category-filter {
+    margin-left: 15px;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 5px;
+}
+

@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProfileController; //?
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -28,3 +32,15 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 Route::get('/dashboard', function () {
     return view('pages.dashboard');
 })->middleware('auth')->name('dashboard');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('tasks', TaskController::class)->except(['index', 'show']);
+    Route::resource('categories', CategoryController::class)->only(['create', 'store', 'destroy']);
+
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); //Связь с пользователем по внешнему ключу id
-            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null'); //Связь с категорией по внешнему ключу
+            $table->foreignId('category_id')->constrained()->onDelete('cascade'); //Связь с категорией по внешнему ключу
             $table->string('title');
             $table->text('description')->nullable(); //->nullable - поле может быть пустым (без него laravel будет просить всегда что-то вводить в это поле)
             $table->datetime('start_date')->nullable(); //Начальная дата создания задачи
