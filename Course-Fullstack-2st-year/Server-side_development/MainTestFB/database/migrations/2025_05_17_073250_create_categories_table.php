@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('color')->nullable;
+            $table->string('name')->unique(); //индекс, если хочешь искать по нему
             $table->timestamps();
         });
     }

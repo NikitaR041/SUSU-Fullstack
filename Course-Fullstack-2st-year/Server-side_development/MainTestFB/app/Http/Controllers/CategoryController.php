@@ -67,7 +67,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->tasks()->detach();
+        $category->tasks()->delete(); // удалит задачи этой категории
         $category->delete();
 
         return redirect()->route('dashboard');

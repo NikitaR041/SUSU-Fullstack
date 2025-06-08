@@ -56,9 +56,9 @@ class TaskController extends Controller
     public function store(Request $request)
     {
     $request->validate([
-        'title' => 'required|string',
+        'title' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'category' => 'nullable|string',
+        'category' => 'nullable|string|max:255',
     ]);
 
     $task = new Task();
@@ -84,9 +84,12 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show($id) {
+        // $task = Task::findOrFail($id);
+        $task = Task::where('id', $id)
+                ->where('user_id', Auth::id()) // ✅ Правильный вызов
+                ->firstOrFail();
+        return view('pages.task', compact('task'));
     }
 
     /**
@@ -100,39 +103,66 @@ class TaskController extends Controller
         $categories = Category::all(); //Загружаем все категории из бд
         return view('tasks.edit', compact('task', 'categories'));
     }
+    // public function update(Request $request, Task $task)
+    // {
+    //     // $task = Task::findOrFail($id);
+    //     // $task->title = $request->title;
+    //     // $task->description = $request->description;
+    //     // $task->save();
+    //     // return response()->json(['success' => true]);
+    //     $this->authorize('update', $task); // если используются политики
+    //     if ($task->title === $request->title && $task->description === $request->description && $task->category->name === $request->category) {
+    //         return redirect()->route('dashboard'); // Переход на рабочий стол
+    //     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    //     $task->title = $request->title;
+    //     $task->description = $request->description;
+    //     $task->category = $request->category;
+    //     $task->save();
+    //     return response()->json(['success' => true]);
+    // }
+
     public function update(Request $request, Task $task)
     {
         $this->authorize('update', $task);
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'categories' => 'array'
-        ]);
+        $task->title = $request->title;
+        $task->description = $request->description;
 
-        $task->update([
-            'title' => $request->title,
-            'description' => $request->description
-        ]);
+        // Обновляем категорию
+        $categoryName = $request->input('category');
+        if ($categoryName) {
+            $category = Category::firstOrCreate(['name' => $categoryName]);
+            $task->category_id = $category->id;
+        }
 
-        $task->categories()->sync($request->categories);
-        return redirect()->route('dashboard');
+        $task->save();
+
+        return redirect()->route('dashboard')->with('success', 'Задача обновлена!');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
+        // $this->authorize('delete', $task);
+        // $task->categories()->detach();
+        // $task->delete();
+        // return redirect()->route('dashboard');
 
-        $task->categories()->detach();
+        $this->authorize('delete', $task); // Проверка политики
         $task->delete();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Задача удалена.');
     }
+    // public function destroy($id)
+    // {
+    //     $task = Task::findOrFail($id);
+    //     $task->delete();
+    //     return redirect()->route('dashboard')->with('success', 'Задача удалена!');
+    //     // return response()->json(['success' => true]);
+    // }
+
 }

@@ -30,10 +30,13 @@ class UserController
             'password' => Hash::make($request->password), // Хэшируем пароль
         ]);
 
-        // return redirect('/login'); // Перенаправляем на страницу входа
-        // Перенаправление (например, на главную)
+
         Auth::login($user);
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'Регистрация успешна!');
+        // Auth::login($user);
+        // $tasks = []; // Пустой массив, так как у нового пользователя ещё нет задач
+        // return view('pages.dashboard', compact('tasks')); // Передаём пустые задачи
+        // return redirect()->route('dashboard');
     }
 
     //Показывать форму входа

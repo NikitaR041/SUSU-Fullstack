@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user(); //Подключение фасада Auth - взятие this текущего пользователя
 
-        $categoryId = $request->query('category'); //Фильтрация задач по категориям
+        // $categoryId = $request->query('category'); //Фильтрация задач по категориям
 
         //Задачи, которые именно связаны с пользователем
         // $tasks = Task::with('categories') //"подгрузить сразу и категории, связанные с каждой задачей"-избежать sql-запросов
@@ -28,16 +28,21 @@ class DashboardController extends Controller
         //             })
         //             ->get(); //Получение коллекции задач, соотвествующих фильтру
 
-        $tasks = Task::with('category') // подгружаем одну категорию на задачу
-            ->where('user_id', $user->id)
-            ->when($categoryId, function ($query) use ($categoryId) {
-                $query->where('category_id', $categoryId); // фильтрация по полю category_id
-            })
-            ->get();
+        // $tasks = Task::with('category') // подгружаем одну категорию на задачу
+        //     ->where('user_id', $user->id)
+        //     ->when($categoryId, function ($query) use ($categoryId) {
+        //         // $query->where('category_id', $categoryId); // фильтрация по полю category_id
+        //         if (Category::where('id', $categoryId)->exists()) {
+        //             $query->where('category_id', $categoryId);
+        //         }
+        //     })->get();
 
-        $categories = Category::all(); //Загружаем все категории
+        // $categories = Category::all(); //Загружаем все категории
 
+        // $tasks = Task::where('user_id', auth()->id())->get(); // Получаем задачи для текущего пользователя
+        $tasks = Task::where('user_id', Auth::id())->get();
         //Возвращаем форму с двумя переменными
-        return view('pages.dashboard', compact('tasks', 'categories'));
+        // return view('pages.dashboard', compact('tasks', 'categories'));
+        return view('pages.dashboard', compact('tasks'));
     }
 }
