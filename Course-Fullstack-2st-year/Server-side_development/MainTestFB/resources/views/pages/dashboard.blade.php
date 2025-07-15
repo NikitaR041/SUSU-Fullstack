@@ -7,7 +7,6 @@
     </div>
     <a href="{{ route('profile.edit') }}" class="btn btn-primary">Редактировать аккаунт</a>
     <a href="{{ route('logout') }}" class="btn btn-secondary">Выход</a>
-
 </div>
 
 <div class="dashboard-container">
